@@ -4,9 +4,7 @@ end
 
 Given /I have AutoGrader setup/ do
   Dir.chdir('rag') do
-    ENV['BUNDLE_GEMFILE']='Gemfile'
-    puts `bundle install --deployment`
-    #puts `cucumber`
+    puts `cucumber`
   end
 end
 
