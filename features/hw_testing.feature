@@ -8,6 +8,8 @@ Feature: Testing instructor created homeworks
     And I have a homework "ruby-intro" in the repo
     When I run the AutoGrader on this homework
     Then I should see no runtime errors
+    And I should see that the process succeeded
+
 
   Scenario: Checks the homeworks file structure
 

@@ -1,3 +1,5 @@
+require 'open3'
+
 Given(/^I have a homework "(.*?)" in the repo$/) do |hw_name|
   expect(Dir).to exist(hw_name)
 end
@@ -13,14 +15,16 @@ When(/^I run the AutoGrader on this homework$/) do
   spec_path = '../ruby-intro/autograder/part1_spec.rb'
   cli_string = "./grade #{test_subject_path} #{spec_path}"
 
-  Dir.chdir('rag') do
-    ENV['BUNDLE_GEMFILE']='Gemfile'
-    output = `#{cli_string}`
-    puts output
-  end
+    @test_output, @test_errors, @test_status = Open3.capture3(
+        { 'BUNDLE_GEMFILE' => 'Gemfile' }, cli_string, :chdir => './rag'
+    )
+
 end
 
-
 Then(/^I should see no runtime errors$/) do
-  pending # express the regexp above with the code you wish you had
+  expect(@test_errors).to eq ''
+end
+
+And(/^I should see that the process succeeded$/) do
+  expect(@test_status).to be_success
 end
