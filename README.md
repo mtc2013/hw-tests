@@ -6,4 +6,4 @@
     - ruby-intro/ : sample homework
         - autograder : graders in the form of tests and supporting files
         - public : skeleton and Readme displayed to student
-        - solutions : answers to homeworks used for validating graders
+        - solutions : used for validating graders
