@@ -9,7 +9,7 @@ Feature: Testing instructor created homeworks
     And I should see the execution results
     Then I should see that there are no errors
 
-  Scenario: Runs the AutoGrader on the homework
+  Scenario: Runs the AutoGrader on specified files
     Given I have the homework in "hw/ruby-intro"
     When I run AutoGrader with the following spec sheet:
       | test_subject           | spec                     |
@@ -17,7 +17,7 @@ Feature: Testing instructor created homeworks
     Then I should see that there are no errors
     And I should see the execution results
 
-  Scenario: Runs the AutoGrader against solution and expects correct results
+  Scenario: Runs the AutoGrader: solutions vs specs
     Given I have the homework in "hw/ruby-intro"
     When I run AutoGrader with the following spec sheet:
       | test_subject           | spec                     | expected_result             |
@@ -32,6 +32,16 @@ Feature: Testing instructor created homeworks
       | public/lib/part1.rb    | autograder/part1_spec.rb | Score out of 100: 5  |
     Then I should see the expected result
     And I should see the execution results
+
+  Scenario Outline: Runs AutoGrader with a given spec sheet
+    Given I have the homework in "hw/ruby-intro"
+    When I run AutoGrader for <test_subject> and <spec>
+    Then I should see the <expected_result>
+    And I should see the execution results with <test_title>
+  Examples:
+  | test_title         | test_subject           | spec                     | expected_result      |
+  | solutions vs specs | public/lib/part1.rb    | autograder/part1_spec.rb | Score out of 100: 5  |
+
 
 
 #  Scenario: confirms AutoGrader setup
