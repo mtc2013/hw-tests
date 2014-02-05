@@ -9,11 +9,20 @@ Feature: Testing instructor created homeworks
     Then I should see that there are no errors
 
   Scenario: Runs the AutoGrader on the homework
-    Given the following spec sheet:
-      | test subject                         | spec                                  |
-      | hw/ruby-intro/solutions/lib/part1.rb |hw/ruby-intro/autograder/part1_spec.rb |
-    When I run the AutoGrader on this homework
+    Given I have the homework in "hw/ruby-intro"
+    When I run AutoGrader with the following spec sheet:
+      | test_subject           | spec                     |
+      | solutions/lib/part1.rb | autograder/part1_spec.rb |
     Then I should see that there are no errors
+    And I should see the execution results
+
+  Scenario:
+    Given I have the homework in "hw/ruby-intro"
+    When I run AutoGrader with the following spec sheet:
+      | test_subject           | spec                     | expected_result |
+      | solutions/lib/part1.rb | autograder/part1_spec.rb | 100:100         |
+    Then I should see the expected result
+    And I should see the execution results
 
 
 #  Scenario: confirms AutoGrader setup
