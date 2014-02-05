@@ -8,7 +8,7 @@ before_install:
 script:
   - git clone https://github.com/AgileVentures/rag.git rag
   - cd rag
-  - git checkout hw_0
+  - git checkout develop
   - BUNDLE_GEMFILE=Gemfile
   - bundle install
   - cd ..

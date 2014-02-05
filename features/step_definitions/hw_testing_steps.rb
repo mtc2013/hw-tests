@@ -96,7 +96,7 @@ Then /^I should see a log directory "(.*?)" has (\d+) files$/ do |dir_name, num_
 end
 
 Then /^I run cucumber in "rag"$/ do
-  Dir.chdir('rag') do
-    `cucumber`
-  end
+  @test_output, @test_errors, @test_status = Open3.capture3(
+      { 'BUNDLE_GEMFILE' => 'Gemfile' }, 'bundle exec cucumber' , :chdir => 'rag'
+  )
 end
