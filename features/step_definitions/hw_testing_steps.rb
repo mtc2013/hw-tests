@@ -1,14 +1,45 @@
 require 'open3'
 
 # GIVEN STEPS
+#
+#Given /I have AutoGrader setup/ do
+#  Dir.chdir('rag') do
+#    ENV['BUNDLE_GEMFILE']='Gemfile'
+#    puts `bundle install --deployment`
+#    puts `cucumber`
+#  end
+#end
 
-Given /I have AutoGrader setup/ do
-  Dir.chdir('rag') do
-    ENV['BUNDLE_GEMFILE']='Gemfile'
-    puts `bundle install --deployment`
-    puts `cucumber`
-  end
+
+Given(/^the AutoGrader is cloned and gems are installed$/) do
+  expect(Dir).to exist("rag")
 end
+
+When /^I run cucumber for AutoGrader$/ do
+  @test_output, @test_errors, @test_status = Open3.capture3(
+      { 'BUNDLE_GEMFILE' => 'Gemfile' }, 'bundle exec cucumber' , :chdir => 'rag'
+  )
+end
+
+Then(/^I should see that there are no errors$/) do
+  expect(@test_status).to be_success
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Given /^that I am in the project root directory "(.*?)"$/ do |project_dir|
   @project_dir = project_dir
@@ -93,10 +124,4 @@ Then /^I should see a log directory "(.*?)" has (\d+) files$/ do |dir_name, num_
   dir = @rag+'/log/'+dir_name
   expect(Dir).to exist(dir)
   expect(Dir[dir+"/*"].length).to have(8).items
-end
-
-Then /^I run cucumber in "rag"$/ do
-  @test_output, @test_errors, @test_status = Open3.capture3(
-      { 'BUNDLE_GEMFILE' => 'Gemfile' }, 'bundle exec cucumber' , :chdir => 'rag'
-  )
 end
