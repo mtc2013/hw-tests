@@ -9,76 +9,25 @@ Feature: Testing instructor created homeworks
     And I should see the execution results
     Then I should see that there are no errors
 
-  Scenario: Runs the AutoGrader on specified files
-    Given I have the homework in "hw/ruby-intro"
-    When I run AutoGrader with the following spec sheet:
-      | test_subject           | spec                     |
-      | solutions/lib/part1.rb | autograder/part1_spec.rb |
-    Then I should see that there are no errors
-    And I should see the execution results
-
-  Scenario: Runs the AutoGrader: solutions vs specs
-    Given I have the homework in "hw/ruby-intro"
-    When I run AutoGrader with the following spec sheet:
-      | test_subject           | spec                     | expected_result             |
-      | solutions/lib/part1.rb | autograder/part1_spec.rb | Score out of 100: 100       |
-    Then I should see the expected result
-    And I should see the execution results
-
-  Scenario: Runs the AutoGrader against skeleton and expects less correct results
-    Given I have the homework in "hw/ruby-intro"
-    When I run AutoGrader with the following spec sheet:
-      | test_subject           | spec                     | expected_result      |
-      | public/lib/part1.rb    | autograder/part1_spec.rb | Score out of 100: 5  |
-    Then I should see the expected result
-    And I should see the execution results
-
   Scenario Outline: Runs AutoGrader with a given spec sheet
     Given I have the homework in "hw/ruby-intro"
     When I run AutoGrader for <test_subject> and <spec>
-    Then I should see the <expected_result>
+    Then I should see that the results are <expected_result>
     And I should see the execution results with <test_title>
   Examples:
-  | test_title         | test_subject           | spec                     | expected_result      |
-  | solutions vs specs | public/lib/part1.rb    | autograder/part1_spec.rb | Score out of 100: 5  |
+  | test_title         | test_subject           | spec                     | expected_result       |
+  | specs vs solution  | solutions/lib/part1.rb | autograder/part1_spec.rb | Score out of 100: 100 |
+  | specs vs skeleton  | public/lib/part1.rb    | autograder/part1_spec.rb | Score out of 100: 5   |
+#|sanity_specs?
 
 
 
-#  Scenario: confirms AutoGrader setup
+
+#  Scenario: confirms AutoGrader feedback we could use for students
 #    Given I delete all the autograder log files
 #    And I run cucumber in "rag"
 #    Then I should see a log directory "assign-0-part-1-submissions" has 8 files
-#
-#
 
-
-
-#    Given that I am in the project root directory "hw-tests"
-#    And that there is an autograders directory "rag"
-#    And that there is a homeworks directory "hw"
-
-#  Scenario: Checks the homeworks file structure
-#    When I check each homeworks directory
-#    Then I should see a directory "autograder" with at least one file
-#    And I should see a directory "public" with at least one file
-#    And I should see a directory "solutions" with at least one file
-#    #And no empty directories or no loose files?
-#
-#  Scenario: Checks that all necessary files are present
-#    When I check the autograders directory
-#    Then I should see an autograder directory "spec" with unit tests
-#    And I should see an autograder directory "features" with integration tests
-#    And I should see an autograder directory "log" where logs are output
-#
-#
-#
-#  Scenario: Runs an AutoGrader grading process on supplied homework
-#    Given I have a homework "ruby-intro"
-#    And I run the AutoGrader on this homework
-#    Then I should see the test results output
-#    And I should see no runtime errors
-#    And I should see that the process succeeded
-#
 #  Scenario: Checks that the supplied files are of correct format
 #
 #  Scenario: AutoGrader run results are visible in Travis
