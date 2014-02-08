@@ -1,5 +1,5 @@
 require 'open3'
-
+require 'debugger'
 def run_ag(subject, spec)
   cli_string = "./grade ../#{subject} ../#{spec}"
   @test_output, @test_errors, @test_status = Open3.capture3(
@@ -51,7 +51,29 @@ Then(/I should see the execution results$/) do
   puts @test_output
 end
 
+Given(/^I have the homework hook in "(.*)"$/) do |file_path|
+  require_relative "../../#{file_path}/spec_sheet.rb"
+  @hw_path = file_path
+  @module = Rubyintro
+end
 
+When(/^I run the autograder for each mapping$/) do
+  @results = []
+  @module.mapping.each do |map|
+    run_ag("#{@hw_path}/#{map[:test_subject]}", "#{@hw_path}/#{map[:spec]}")
+    @results.insert(@results.length, {test_output: @test_output, test_errors: @test_errors, test_status: @test_status, expected_result: map[:expected_result], test_title: map[:test_title]})
+  end
+end
+
+Then(/^the results for each mapping match the expected values$/) do
+  @results.each do |result|
+    expect(result[:test_output]).to match /#{result[:expected_result]}/
+    @test_status = result[:test_status]
+    steps %Q{
+      And I should see the execution results with #{result[:test_title]}
+    }
+  end
+end
 
 
 #

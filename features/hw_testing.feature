@@ -19,6 +19,10 @@ Feature: Testing instructor created homeworks
   | specs vs solution  | solutions/lib/part1.rb | autograder/part1_spec.rb | Score out of 100: 100 |
   | specs vs skeleton  | public/lib/part1.rb    | autograder/part1_spec.rb | Score out of 100: 5   |
 #|sanity_specs?
+  Scenario: Runs AutoGrader with a given ruby framework hook
+    Given I have the homework hook in "hw/ruby-intro"
+    When I run the autograder for each mapping
+    Then the results for each mapping match the expected values
 
 
 
